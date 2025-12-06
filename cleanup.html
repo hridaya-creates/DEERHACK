@@ -4,8 +4,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
     <title>Cleanup Nepal - Submit Cleanup</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f2f3f4;
+            margin: 0;
+        }
+
+        .cleanup-container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        input,
+        button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #2ECC71;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .success {
+            color: green;
+        }
+
+        .error {
+            color: red;
+        }
+
+        img.preview {
+            max-width: 100%;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+
+        .points-display {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -13,14 +63,87 @@
         <h1>Submit Cleanup</h1>
         <form id="cleanupForm">
             <label>Before Photo</label>
-            <input type="file" id="beforePhoto" required>
+            <input type="file" id="beforePhoto" accept="image/*" required>
+            <img id="beforePreview" class="preview">
+
             <label>After Photo</label>
-            <input type="file" id="afterPhoto" required>
+            <input type="file" id="afterPhoto" accept="image/*" required>
+            <img id="afterPreview" class="preview">
+
+            <p>Location: <span id="location">Not captured yet</span></p>
             <button type="submit">Submit</button>
         </form>
         <p id="cleanup-msg" class="success"></p>
+        <p class="points-display">Your Points: <span id="user-points">0</span></p>
     </div>
-    <script src="js/script.js"></script>
+
+    <script>
+        let points = 0;
+
+        function previewImage(inputId, previewId) {
+            const input = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+            input.addEventListener('change', function () {
+                const file = input.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        preview.src = e.target.result;
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+        previewImage('beforePhoto', 'beforePreview');
+        previewImage('afterPhoto', 'afterPreview');
+
+        const locationSpan = document.getElementById('location');
+        let userLat = null;
+        let userLon = null;
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                userLat = position.coords.latitude;
+                userLon = position.coords.longitude;
+                locationSpan.innerText = `Lat: ${userLat.toFixed(6)}, Lon: ${userLon.toFixed(6)}`;
+            }, function (err) {
+                locationSpan.innerText = "Unable to capture location";
+            });
+        } else {
+            locationSpan.innerText = "Geolocation not supported";
+        }
+
+        
+        const allowedArea = {
+            latMin: 27.6800,
+            latMax: 27.6900,
+            lonMin: 85.2900,
+            lonMax: 85.3000
+        };
+
+        function isInAllowedArea(lat, lon) {
+            return lat >= allowedArea.latMin && lat <= allowedArea.latMax &&
+                lon >= allowedArea.lonMin && lon <= allowedArea.lonMax;
+        }
+
+        const cleanupForm = document.getElementById('cleanupForm');
+        if (cleanupForm) {
+            cleanupForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                if (userLat !== null && userLon !== null && isInAllowedArea(userLat, userLon)) {
+                    points += 10;
+                    document.getElementById('user-points').innerText = points;
+                    document.getElementById('cleanup-msg').innerText = "Cleanup submitted! +10 points";
+                } else {
+                    document.getElementById('cleanup-msg').innerText = "You are not at an allowed cleanup location";
+                    document.getElementById('cleanup-msg').className = "error";
+                }
+                cleanupForm.reset();
+                document.getElementById('beforePreview').src = '';
+                document.getElementById('afterPreview').src = '';
+            });
+        }
+    </script>
 </body>
 
 </html>

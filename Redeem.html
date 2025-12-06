@@ -1,0 +1,159 @@
+<!DOCTYPE html > 
+html lang="en">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cleanup Nepal - Redeem Rewards</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f2f3f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .redeem-container {
+            max-width: 900px;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2ECC71;
+            margin-bottom: 20px;
+        }
+
+        .points-display {
+            font-size: 18px;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .redeem-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .redeem-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            width: 220px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-align: center;
+        }
+
+        .redeem-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .redeem-card img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border-radius: 12px;
+        }
+
+        .redeem-card h3 {
+            margin: 10px 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .redeem-card p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        button.redeem-btn {
+            background-color: #2ECC71;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button.redeem-btn:hover {
+            background-color: #27ae60;
+        }
+
+        button.redeem-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .success-msg {
+            color: green;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="redeem-container">
+        <h1>Redeem Your Rewards</h1>
+        <p class="points-display">Your Points: <span id="user-points">50</span></p>
+
+        <div class="redeem-grid" id="redeem-grid">
+            <div class="redeem-card" data-points="30">
+                <img src="images/restaurant1.png" alt="Restaurant 1">
+                <h3>Pizza Coupon</h3>
+                <p>30 Points</p>
+                <button class="redeem-btn">Redeem</button>
+            </div>
+            <div class="redeem-card" data-points="50">
+                <img src="images/restaurant2.png" alt="Restaurant 2">
+                <h3>Burger Voucher</h3>
+                <p>50 Points</p>
+                <button class="redeem-btn">Redeem</button>
+            </div>
+            <div class="redeem-card" data-points="70">
+                <img src="images/restaurant3.png" alt="Restaurant 3">
+                <h3>Free Coffee</h3>
+                <p>70 Points</p>
+                <button class="redeem-btn">Redeem</button>
+            </div>
+        </div>
+        <p class="success-msg" id="success-msg"></p>
+    </div>
+
+    <script>
+        let userPoints = 50;
+
+        function updateUserPointsDisplay() {
+            document.getElementById('user-points').innerText = userPoints;
+        }
+
+        const redeemButtons = document.querySelectorAll('.redeem-btn');
+        redeemButtons.forEach(btn => {
+            const card = btn.parentElement;
+            const requiredPoints = parseInt(card.getAttribute('data-points'));
+            if (userPoints < requiredPoints) btn.disabled = true;
+
+            btn.addEventListener('click', function () {
+                if (userPoints >= requiredPoints) {
+                    userPoints -= requiredPoints;
+                    updateUserPointsDisplay();
+                    document.getElementById('success-msg').innerText = `You have redeemed ${card.querySelector('h3').innerText}!`;
+                    btn.disabled = true;
+                } else {
+                    document.getElementById('success-msg').innerText = `Not enough points to redeem this reward.`;
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

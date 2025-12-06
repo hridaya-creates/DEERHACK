@@ -4,21 +4,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <title>Cleanup Nepal - Login</title>
+    <title>Cleanup Nepal - Login / Sign Up</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f2f3f4;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        input,
+        button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #2ECC71;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .toggle-link {
+            color: #2ECC71;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="login-container">
-        <h1>Login</h1>
+    <div class="container">
+        <h1 id="formTitle">Login</h1>
+
         <form id="loginForm">
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="password" id="password" placeholder="Password" required>
+            <input type="email" id="loginEmail" placeholder="Email" required>
+            <input type="password" id="loginPassword" placeholder="Password" required>
             <button type="submit">Login</button>
         </form>
+
+        <form id="signupForm" class="hidden">
+            <input type="text" id="signupName" placeholder="Full Name" required>
+            <input type="email" id="signupEmail" placeholder="Email" required>
+            <input type="password" id="signupPassword" placeholder="Password" required>
+            <button type="submit">Sign Up</button>
+        </form>
+
         <p id="error" class="error"></p>
+        <p id="toggleText">
+            <span id="toggleMessage">Don't have an account?</span>
+            <span class="toggle-link" id="toggleForm">Sign Up</span>
+        </p>
     </div>
-    <script src="js/script.js"></script>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const toggleFormLink = document.getElementById('toggleForm');
+        const formTitle = document.getElementById('formTitle');
+        const toggleMessage = document.getElementById('toggleMessage');
+        const errorText = document.getElementById('error');
+
+        toggleFormLink.addEventListener('click', () => {
+            loginForm.classList.toggle('hidden');
+            signupForm.classList.toggle('hidden');
+
+            if (loginForm.classList.contains('hidden')) {
+                formTitle.innerText = "Sign Up";
+                toggleMessage.innerText = "Already have an account?";
+                toggleFormLink.innerText = "Login";
+                errorText.innerText = "";
+            } else {
+                formTitle.innerText = "Login";
+                toggleMessage.innerText = "Don't have an account?";
+                toggleFormLink.innerText = "Sign Up";
+                errorText.innerText = "";
+            }
+        });
+
+        loginForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (email === "test@example.com" && password === "12345") {
+                window.location.href = "dashboard.html";
+            } else {
+                errorText.innerText = "Invalid email or password";
+            }
+        });
+
+        signupForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+
+            console.log("Sign Up Data:", { name, email, password });
+            errorText.style.color = "green";
+            errorText.innerText = "Sign Up successful! You can now login.";
+            toggleFormLink.click();
+        });
+    </script>
 </body>
 
 </html>

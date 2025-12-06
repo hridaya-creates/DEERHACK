@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cleanup Nepal - Rewards</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f2f3f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .rewards-container {
+            max-width: 900px;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2ECC71;
+            margin-bottom: 20px;
+        }
+
+        .points-display {
+            font-size: 18px;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .rewards-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .reward-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            width: 200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .reward-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .reward-card img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border-radius: 50%;
+        }
+
+        .reward-card h3 {
+            margin: 10px 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .reward-card p {
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="rewards-container">
+        <h1>Your Rewards</h1>
+        <p class="points-display">Total Points: <span id="reward-points">10</span></p>
+        <div class="rewards-grid" id="rewards-grid">
+            <div class="reward-card">
+                <img src="images/badge1.png" alt="Badge 1">
+                <h3>Eco Badge</h3>
+                <p>10 Points</p>
+            </div>
+            <div class="reward-card">
+                <img src="images/badge2.png" alt="Badge 2">
+                <h3>Green Hero</h3>
+                <p>20 Points</p>
+            </div>
+            <div class="reward-card">
+                <img src="images/badge3.png" alt="Badge 3">
+                <h3>Planet Saver</h3>
+                <p>30 Points</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let totalPoints = 10;
+
+        function updatePoints(points) {
+            totalPoints = points;
+            document.getElementById('reward-points').innerText = totalPoints;
+        }
+
+       
+        function addReward(name, points, img) {
+            const grid = document.getElementById('rewards-grid');
+            const card = document.createElement('div');
+            card.className = 'reward-card';
+            card.innerHTML = `<img src="${img}" alt="${name}"><h3>${name}</h3><p>${points} Points</p>`;
+            grid.appendChild(card);
+        }
+
+       
+        addReward('Cleanup Master', 50, 'images/badge4.png');
+    </script>
+</body>
+
+</html>
