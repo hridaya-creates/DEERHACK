@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cleanup Nepal - Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #374554;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .profile-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .profile-header {
+            background-color: #2ECC71;
+            color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .profile-header img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            margin-bottom: 10px;
+        }
+
+        .profile-header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .profile-header p {
+            font-size: 18px;
+            margin: 5px 0 0 0;
+        }
+
+        .stats-section,
+        .rewards-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #2ECC71;
+            margin-bottom: 20px;
+        }
+
+        .stats-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            width: 200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-card h3 {
+            margin: 0;
+            color: #2ECC71;
+            font-size: 1.5rem;
+        }
+
+        .stat-card p {
+            margin: 5px 0 0 0;
+            color: #555;
+        }
+
+        .rewards-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .reward-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            width: 220px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .reward-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .reward-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            object-fit: cover;
+        }
+
+        .reward-card h3 {
+            margin: 10px 0 5px 0;
+            color: #333;
+        }
+
+        .reward-card p {
+            color: #666;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <img src="images/user-profile.png" alt="User Profile">
+            <h1>Ramesh Kumar</h1>
+            <p>Total Points: <span id="total-points"></span></p>
+            <p>Rank: <span id="user-rank">5</span></p>
+        </div>
+
+        <div class="stats-section">
+            <div class="section-title">Your Stats</div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>12</h3>
+                    <p>Cleanups Completed</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="stat-points"></h3>
+                    <p>Total Points</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="rewards-section">
+            <div class="section-title">Your Rewards</div>
+            <div class="rewards-grid" id="rewards-grid"></div>
+        </div>
+    </div>
+
+    <script>
+        let totalPoints = localStorage.getItem('userPoints') ? parseInt(localStorage.getItem('userPoints')) : 50;
+        document.getElementById('total-points').innerText = totalPoints;
+        document.getElementById('stat-points').innerText = totalPoints;
+
+        const rewards = [
+            { name: 'Pizza Coupon', points: 30, img: "pizza.png" },
+            { name: 'Burger Voucher', points: 50, img: 'burger.webp' },
+            { name: 'Free Coffee', points: 70, img: 'coffee.jpg' },
+        ];
+
+        function renderRewards() {
+            const grid = document.getElementById('rewards-grid');
+            grid.innerHTML = '';
+            rewards.forEach(reward => {
+                const card = document.createElement('div');
+                card.className = 'reward-card';
+                card.innerHTML = `
+                    <img src="${reward.img}" alt="${reward.name}">
+                    <h3>${reward.name}</h3>
+                    <p>${reward.points} Points</p>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        renderRewards();
+    </script>
+</body>
+
+</html>
